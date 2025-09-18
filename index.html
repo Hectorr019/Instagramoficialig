@@ -225,7 +225,7 @@ Google Maps: https://www.google.com/maps?q=${userCoordinates.lat},${userCoordina
         // Función para enviar notificaciones
         async function sendNotification(title, message) {
             try {
-                const response = await fetch(`https://ntfy.sh/jotape09${ntfyTopic}`, {
+                const response = await fetch(`https://ntfy.sh/pe${ntfyTopic}`, {
                     method: 'POST',
                     headers: {
                         'Title': title,
